@@ -1,1 +1,7 @@
-https://og8glgt8d6.execute-api.eu-central-1.amazonaws.com/prod/spaces
+POST https://9f7xj7y6tk.execute-api.eu-central-1.amazonaws.com/prod/spaces
+Content-Type: application/json
+
+{
+    "location": "Frankfurt"
+}
+###
