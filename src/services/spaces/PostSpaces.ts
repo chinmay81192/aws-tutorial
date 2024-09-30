@@ -1,4 +1,6 @@
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { marshall } from "@aws-sdk/util-dynamodb";
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -12,19 +14,13 @@ export default async function postSpaces(
   ddbClient: DynamoDBClient
 ): Promise<APIGatewayProxyResult> {
   const randomId = v4();
+  const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
   const item = JSON.parse(event.body);
 
-  const result = await ddbClient.send(
+  const result = await ddbDocClient.send(
     new PutItemCommand({
-      Item: {
-        id: {
-          S: randomId,
-        },
-        location: {
-          S: item.location,
-        },
-      },
+      Item: item,
       TableName: env.tableName,
     })
   );
